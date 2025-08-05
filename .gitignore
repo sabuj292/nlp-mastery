@@ -1,0 +1,37 @@
+# VS Code settings
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+*.pyo
+*.pyd
+*.pkl
+*.db
+*.log
+
+# Environment files
+.env
+.env.*
+*.env
+
+# Jupyter checkpoints
+.ipynb_checkpoints
+
+# Cache
+.cache/
+*.DS_Store
+*.idea/
+*.mypy_cache/
+*.pytest_cache/
+
+# Wordcloud font cache
+~/.matplotlib
+~/.cache
+
+# Conda environments (if exported)
+*.yml
