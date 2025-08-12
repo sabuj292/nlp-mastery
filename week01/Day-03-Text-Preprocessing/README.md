@@ -165,12 +165,7 @@ python mini_project/tweet_cleaner.py --input data/sample_tweets.txt --output cle
 - Prefer standard libs; add dependencies only when it clearly helps.
 - New exercises: `exNN_description.py` with a short docstring and a tiny demo.
 
----
 
-## 📄 License
-If open-sourcing, add an MIT `LICENSE` at the repo root (or remove the license badge in your root README).
-
----
 
 ## ⭐ Acknowledgments
 Part of **NLP Mastery** — Week 01 · **Day 03: Text Preprocessing & Cleaning**.
