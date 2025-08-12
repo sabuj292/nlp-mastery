@@ -1,0 +1,5 @@
+nltk
+spacy
+emoji
+beautifulsoup4
+unidecode

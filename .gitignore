@@ -1,37 +1,38 @@
-# VS Code settings
-.vscode/
-
-# Python
+# ---- Python
 __pycache__/
 *.py[cod]
-*.egg
 *.egg-info/
 dist/
 build/
-*.pyo
-*.pyd
-*.pkl
-*.db
 *.log
 
-# Environment files
-.env
-.env.*
-*.env
+# ---- Virtual envs
+.venv/
+venv/
+env/
 
-# Jupyter checkpoints
-.ipynb_checkpoints
-
-# Cache
+# ---- Caches
 .cache/
-*.DS_Store
-*.idea/
-*.mypy_cache/
-*.pytest_cache/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
 
-# Wordcloud font cache
-~/.matplotlib
-~/.cache
+# ---- Jupyter
+.ipynb_checkpoints/
 
-# Conda environments (if exported)
-*.yml
+# ---- Editors/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ---- NLP artifacts (optional)
+nltk_data/
+spacy/
+*.model
+*.bin
+*.pt
+*.h5
+
+# ---- Archives (optional)
+*.zip

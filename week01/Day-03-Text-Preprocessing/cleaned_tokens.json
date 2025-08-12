@@ -1,0 +1,44 @@
+[
+  {
+    "original": "@John I ❤️ NLP! Check https://nlp.com #AI #NLP",
+    "tokens": [
+      "nlp",
+      "check",
+      "ai",
+      "nlp"
+    ]
+  },
+  {
+    "original": "Feeling great today 😀😀 #happy",
+    "tokens": [
+      "feeling",
+      "great",
+      "today",
+      "happy"
+    ]
+  },
+  {
+    "original": "This product is not good... I will not buy again! #review",
+    "tokens": [
+      "product",
+      "not",
+      "good",
+      "not",
+      "buy",
+      "review"
+    ]
+  },
+  {
+    "original": "Visit www.example.org now!!!",
+    "tokens": [
+      "visit"
+    ]
+  },
+  {
+    "original": "বাংলায় NLP করা যায়? #বাংলা #NLP 🚀",
+    "tokens": [
+      "nlp",
+      "nlp"
+    ]
+  }
+]
