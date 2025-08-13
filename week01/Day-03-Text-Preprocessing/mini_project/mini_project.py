@@ -137,3 +137,73 @@ print("\nToken count stats (after stopword removal):")
 lens2 = df_work["tokens_nostop"].apply(len)
 print("min/mean/median/max =", lens2.min(), round(lens2.mean(),2), lens2.median(), lens2.max())
 print("\nAverage reduction in tokens:", round((lens.mean()-lens2.mean()),2))
+
+
+
+
+# STEP 6 — POS-aware lemmatization
+import nltk
+from nltk.corpus import wordnet
+from nltk.stem import WordNetLemmatizer
+
+# 6.1 Map NLTK POS (Treebank) -> WordNet POS
+def get_wordnet_pos(tag: str):
+    if tag.startswith('J'):
+        return wordnet.ADJ
+    elif tag.startswith('V'):
+        return wordnet.VERB
+    elif tag.startswith('N'):
+        return wordnet.NOUN
+    elif tag.startswith('R'):
+        return wordnet.ADV
+    else:
+        return wordnet.NOUN  # default
+
+lemmatizer = WordNetLemmatizer()
+
+# 6.2 POS tag and lemma
+def pos_lemmatize(tokens):
+    # POS tag the token list
+    pos_tags = nltk.pos_tag(tokens)
+    # Lemmatize using POS mapping
+    return [lemmatizer.lemmatize(w, get_wordnet_pos(tag)) for w, tag in pos_tags]
+
+df_work["tokens_lemma"] = df_work["tokens_nostop"].apply(pos_lemmatize)
+
+print("Lemmatization preview (6 rows):")
+print(
+    df_work.sample(6, random_state=706)[
+        ["tokens_nostop", "tokens_lemma"]
+    ].to_string(index=False)
+)
+
+# Quick delta check: how many tokens changed by lemmatization?
+changed_counts = [
+    sum(1 for a,b in zip(a_list, b_list) if a != b)
+    for a_list, b_list in zip(df_work["tokens_nostop"], df_work["tokens_lemma"])
+]
+print("\nAvg tokens changed by lemmatization (per row):", round(sum(changed_counts)/len(changed_counts), 3))
+
+
+
+
+# STEP 7 — Whitespace cleanup & assemble final clean_text
+
+def detokenize(tokens):
+    # Join with single spaces and strip ends
+    return " ".join(tokens).strip()
+
+# Build the final clean_text column from tokens_lemma
+df_work["clean_text"] = df_work["tokens_lemma"].apply(detokenize)
+
+# Preview: before vs after for 5 random rows
+import pandas as pd
+pd.set_option("display.max_colwidth", 160)
+
+preview = df_work.sample(5, random_state=777)[["text", "clean_text"]]
+print("Before vs After (5 samples):")
+print(preview.to_string(index=False))
+
+# Quick sanity checks
+num_empty = (df_work["clean_text"].str.len() == 0).sum()
+print(f"\nEmpty cleaned rows: {num_empty} / {len(df_work)}")
