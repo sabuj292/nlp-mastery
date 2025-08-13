@@ -63,3 +63,77 @@ print(df_raw["len_tokens"].min(), df_raw["len_tokens"].mean(), df_raw["len_token
 
 print("\nRandom 5 raw examples:")
 print(df_raw.sample(5, random_state=101)[["label","text"]].to_string(index=False))
+
+
+# STEP 3 — Function 1: Lowercasing
+def to_lower(text: str) -> str:
+    return text.lower()
+
+# We'll keep a working copy to add columns step-by-step
+df_work = df_raw[["label","text"]].copy()
+df_work["text_lower"] = df_work["text"].apply(to_lower)
+
+print("Lowercasing preview (5 rows):")
+print(df_work.sample(5, random_state=2025)[["text","text_lower"]].to_string(index=False))
+
+
+
+# STEP 4 — Function 2: Punctuation removal
+import string
+
+# Include smart quotes/dashes/ellipsis beyond ASCII punctuation
+SMART_PUNCT = "“”‘’—–…"
+PUNCT_TABLE = str.maketrans("", "", string.punctuation + SMART_PUNCT)
+
+def remove_punct(text: str) -> str:
+    return text.translate(PUNCT_TABLE)
+
+# Apply to the lowercased text from Step 3
+df_work["text_nopunct"] = df_work["text_lower"].apply(remove_punct)
+
+print("Punctuation removal preview (6 rows):")
+print(df_work.sample(6, random_state=606)[["text_lower","text_nopunct"]].to_string(index=False))
+
+# Quick sanity check: how many rows changed?
+changed = (df_work["text_lower"] != df_work["text_nopunct"]).sum()
+print(f"\nRows altered by punctuation removal: {changed} / {len(df_work)}")
+
+
+# Step 5: Tokenization + Stopword removal 
+
+# Step 5A — Tokenize
+
+# STEP 5A — Tokenize the punctuation-stripped text
+from nltk.tokenize import word_tokenize
+
+def tokenize(text: str):
+    return word_tokenize(text)
+
+df_work["tokens"] = df_work["text_nopunct"].apply(tokenize)
+
+print("Tokenization preview (5 rows):")
+print(df_work.sample(5, random_state=505)[["text_nopunct","tokens"]].to_string(index=False))
+
+print("\nToken count stats (before stopword removal):")
+lens = df_work["tokens"].apply(len)
+print("min/mean/median/max =", lens.min(), round(lens.mean(),2), lens.median(), lens.max())
+
+
+#  Step 5B — Remove stopwords
+
+# STEP 5B — Remove stopwords
+from nltk.corpus import stopwords
+STOPWORDS = set(stopwords.words("english"))
+
+def remove_stopwords(tokens):
+    return [t for t in tokens if t.lower() not in STOPWORDS]
+
+df_work["tokens_nostop"] = df_work["tokens"].apply(remove_stopwords)
+
+print("Stopword removal preview (6 rows):")
+print(df_work.sample(6, random_state=606)[["tokens","tokens_nostop"]].to_string(index=False))
+
+print("\nToken count stats (after stopword removal):")
+lens2 = df_work["tokens_nostop"].apply(len)
+print("min/mean/median/max =", lens2.min(), round(lens2.mean(),2), lens2.median(), lens2.max())
+print("\nAverage reduction in tokens:", round((lens.mean()-lens2.mean()),2))
