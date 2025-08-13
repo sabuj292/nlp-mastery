@@ -1,6 +1,16 @@
 # STEP 1 — Setup & Dataset Load (Tweets)
 # --------------------------------------
 # If you haven't installed NLTK: pip install nltk
+from src.cleaning import clean_text_basic, clean_text_advanced
+
+# quick smoke test
+s = "I'm thrilled! Shipping was great — 10/10 would buy again. https://x.y"
+print("BASIC :", clean_text_basic(s))
+print("ADV   :", clean_text_advanced(s))
+
+
+
+
 import random
 import pandas as pd
 import nltk
